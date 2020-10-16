@@ -1,12 +1,15 @@
-import React from "react";
+import { Modal } from "@material-ui/core";
+import React, { useState } from "react";
 import Note from "../../components/Note";
+import NoteModal from "../../components/NoteModal";
 import "./Home.css";
 
-const notes = [
+const _notes = [
   {
     id: 1,
     title: "Maguinho",
-    description: "A matéria que mais da pau e divide corações Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam",
+    description:
+      "A matéria que mais da pau e divide corações Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam",
   },
   {
     id: 2,
@@ -52,12 +55,40 @@ const notes = [
 ];
 
 function Home() {
+  const [viewNote, setViewNote] = useState();
+  const [notes, setNotes] = useState(_notes);
+
+  function handleClick(note) {
+    setViewNote(note);
+  }
+
+  function handleClose() {
+    setViewNote();
+  }
+
+  function handleSave(note) {
+    const newNotes = [...notes];
+
+    let i = 0;
+    for (i; i < notes.length; i++) 
+      if(notes[i].id === note.id)
+        break;
+    
+    newNotes[i] = note;
+    setNotes(newNotes);
+  }
+
   return (
-    <div className="noteContainer">
-      {notes.map((note) => (
-        <Note key={note.id} note={note} />
-      ))}
-    </div>
+    <>
+      <div className="noteContainer">
+        {notes.map((note) => (
+          <Note key={note.id} note={note} onClick={handleClick} />
+        ))}
+      </div>
+      <Modal open={viewNote} onClose={handleClose} className="modalStyle">
+        <NoteModal note={viewNote} onClose={handleClose} onSave={handleSave} />
+      </Modal>
+    </>
   );
 }
 
