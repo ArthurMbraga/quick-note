@@ -8,7 +8,9 @@ function Login() {
   const [password, setPassword] = useState();
   const history = useHistory();
 
-  function login() {
+  function login(e) {
+    e.preventDefault();
+    
     if (email === "arthur@cpejr.com.br" && password === "123") {
       alert("Bem vindo!\n" + email);
       history.push("home");
@@ -34,7 +36,7 @@ function Login() {
               onChange={(e) => setPassword(e.target.value)}
             />
           </Form.Group>
-          <Button variant="primary" onClick={login}>
+          <Button variant="primary" type="submit" onClick={login}>
             Login
           </Button>
         </Form>
