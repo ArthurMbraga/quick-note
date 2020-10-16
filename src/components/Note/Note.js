@@ -1,8 +1,13 @@
 import React from "react";
 import "./Note.css";
 
-function Note() {
-  return <div></div>;
+function Note({ note }) {
+  return (
+    <div className="note">
+      <div className="noteTitle">{note.title}</div>
+      <div className="noteDescription">{note.description}</div>
+    </div>
+  );
 }
 
 export default Note;

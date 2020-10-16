@@ -1,11 +1,12 @@
 import React from "react";
-import './Home.css'
+import Note from "../../components/Note";
+import "./Home.css";
 
 const notes = [
   {
     id: 1,
     title: "Maguinho",
-    description: "A matéria que mais da pau e divide corações",
+    description: "A matéria que mais da pau e divide corações Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam",
   },
   {
     id: 2,
@@ -45,12 +46,19 @@ const notes = [
   {
     id: 9,
     title: "EDA",
-    description: "Toda semana um novo teste e um pequeno momento de pânico nas quintas feiras",
+    description:
+      "Toda semana um novo teste e um pequeno momento de pânico nas quintas feiras",
   },
 ];
 
 function Home() {
-  return <h1>Home</h1>;
+  return (
+    <div className="noteContainer">
+      {notes.map((note) => (
+        <Note key={note.id} note={note} />
+      ))}
+    </div>
+  );
 }
 
 export default Home;
