@@ -1,20 +1,27 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
+import Context from "../../Contexts/Context";
 
 function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const history = useHistory();
+  const {
+    login: { signIn },
+  } = useContext(Context);
 
-  function login(e) {
+  async function login(e) {
     e.preventDefault();
-    
-    if (email === "arthur@cpejr.com.br" && password === "123") {
+
+    const data = await signIn(email, password);
+    if (data.accessToken) {
       alert("Bem vindo!\n" + email);
       history.push("home");
-    } else alert("Dados incorretos");
+    } else {
+      alert("Dados incorretos");
+    }
   }
 
   return (

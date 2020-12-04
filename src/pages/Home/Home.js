@@ -85,7 +85,7 @@ function Home() {
           <Note key={note.id} note={note} onClick={handleClick} />
         ))}
       </div>
-      <Modal open={viewNote} onClose={handleClose} className="modalStyle">
+      <Modal open={viewNote !== undefined} onClose={handleClose} className="modalStyle">
         <NoteModal note={viewNote} onClose={handleClose} onSave={handleSave} />
       </Modal>
     </>

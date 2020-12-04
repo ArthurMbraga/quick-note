@@ -9,18 +9,21 @@ import {
   Toolbar,
   Typography,
 } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { IconContext } from "react-icons/lib";
 import { MdHome, MdNoteAdd } from "react-icons/md";
 import { FaTrash, FaUser } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
 import "./Menu.css";
+import Context from "../../Contexts/Context";
 
 function Menu(props) {
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState("/home");
   const [open, setOpen] = useState(false);
+
+  const { user } = useContext(Context);
 
   function handleClick(pathName) {
     history.push(pathName);
@@ -70,7 +73,7 @@ function Menu(props) {
             <FiMenu />
           </IconButton>
           <div className="userContainer">
-            <p className="userName">John Doe</p>
+            <p className="userName">{user?.name}</p>
             <Avatar alt="John Doe" src="/images/Avatar.png" />
           </div>
         </Toolbar>
@@ -78,9 +81,10 @@ function Menu(props) {
       {props.children}
       <Drawer open={open} onClose={() => handleDrawer(false)}>
         <List className="list">
-          {pages.map((listItem) => {
+          {pages.map((listItem, index) => {
             return (
               <ListItem
+                key={index}
                 button
                 selected={currentPage === listItem.pathName}
                 onClick={() => {
