@@ -2,13 +2,13 @@ import React from "react";
 import Routes from "./routes";
 import "./global.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Provider from "./Contexts/Provider";
+import LoginContextProvider from "./Contexts/LoginContext";
 
 function App() {
   return (
-    <Provider>
+    <LoginContextProvider>
       <Routes />
-    </Provider>
+    </LoginContextProvider>
   );
 }
 

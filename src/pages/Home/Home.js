@@ -1,62 +1,32 @@
 import { Modal } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Note from "../../components/Note";
 import NoteModal from "../../components/NoteModal";
+import api from "../../services/api";
+import { LoginContext } from "../../Contexts/LoginContext";
 import "./Home.css";
-
-const _notes = [
-  {
-    id: 1,
-    title: "Maguinho",
-    description:
-      "A matéria que mais da pau e divide corações Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam",
-  },
-  {
-    id: 2,
-    title: "Sistemas Digitais",
-    description: "Programação com circuitos",
-  },
-  {
-    id: 3,
-    title: "PDS II",
-    description: "Melhor matéria",
-  },
-  {
-    id: 4,
-    title: "FundMec",
-    description: "Ninguém realmente gosta mas é a vida",
-  },
-  {
-    id: 5,
-    title: "Circuitos 1",
-    description: "Prova de que elétrica é o melhor curso",
-  },
-  {
-    id: 6,
-    title: "Cálculo 2",
-    description: "O pior dos cálculos",
-  },
-  {
-    id: 7,
-    title: "Fenotrans",
-    description: "Poque eu tenho isso mesmo?",
-  },
-  {
-    id: 8,
-    title: "Bancos de Dados",
-    description: "Optativa do Arthur",
-  },
-  {
-    id: 9,
-    title: "EDA",
-    description:
-      "Toda semana um novo teste e um pequeno momento de pânico nas quintas feiras",
-  },
-];
 
 function Home() {
   const [viewNote, setViewNote] = useState();
-  const [notes, setNotes] = useState(_notes);
+  const [notes, setNotes] = useState();
+  const { token } = useContext(LoginContext);
+
+  useEffect(() => {
+    if (token) {
+      api
+        .get("/note", {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => {
+          const data = response.data;
+
+          setNotes(data);
+        });
+    }
+  }, [token]);
 
   function handleClick(note) {
     setViewNote(note);
@@ -70,10 +40,18 @@ function Home() {
     const newNotes = [...notes];
 
     let i = 0;
-    for (i; i < notes.length; i++) 
-      if(notes[i].id === note.id)
-        break;
-    
+    for (i; i < notes.length; i++) if (notes[i].note_id === note.note_id) break;
+
+    const fieldsToUpdate = { ...note };
+    delete fieldsToUpdate.user_id;
+
+    api.put(`/note/${note.note_id}`, fieldsToUpdate, {
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${token}`,
+      },
+    });
+
     newNotes[i] = note;
     setNotes(newNotes);
   }
@@ -81,11 +59,15 @@ function Home() {
   return (
     <>
       <div className="noteContainer">
-        {notes.map((note) => (
-          <Note key={note.id} note={note} onClick={handleClick} />
+        {notes?.map((note) => (
+          <Note key={note.note_id} note={note} onClick={handleClick} />
         ))}
       </div>
-      <Modal open={viewNote !== undefined} onClose={handleClose} className="modalStyle">
+      <Modal
+        open={viewNote !== undefined}
+        onClose={handleClose}
+        className="modalStyle"
+      >
         <NoteModal note={viewNote} onClose={handleClose} onSave={handleSave} />
       </Modal>
     </>

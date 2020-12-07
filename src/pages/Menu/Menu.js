@@ -15,16 +15,15 @@ import { MdHome, MdNoteAdd } from "react-icons/md";
 import { FaTrash, FaUser } from "react-icons/fa";
 import { FiMenu } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
+import { LoginContext } from "../../Contexts/LoginContext";
 import "./Menu.css";
-import Context from "../../Contexts/Context";
 
 function Menu(props) {
   const history = useHistory();
   const [currentPage, setCurrentPage] = useState("/home");
   const [open, setOpen] = useState(false);
 
-  const { user } = useContext(Context);
-
+  const { user } = useContext(LoginContext);
   function handleClick(pathName) {
     history.push(pathName);
     setCurrentPage(pathName);

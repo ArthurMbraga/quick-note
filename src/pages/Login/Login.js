@@ -2,15 +2,13 @@ import React, { useContext, useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { useHistory } from "react-router-dom";
 import "./Login.css";
-import Context from "../../Contexts/Context";
+import { LoginContext } from "../../Contexts/LoginContext";
 
 function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const history = useHistory();
-  const {
-    login: { signIn },
-  } = useContext(Context);
+  const { signIn } = useContext(LoginContext);
 
   async function login(e) {
     e.preventDefault();

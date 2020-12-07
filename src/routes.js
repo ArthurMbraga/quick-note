@@ -1,11 +1,19 @@
-import React from "react";
+import React, { useContext } from "react";
+import { useEffect } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { LoginContext } from "./Contexts/LoginContext";
 import Cadastro from "./pages/Cadastro";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
 import Menu from "./pages/Menu";
 
 function Routes() {
+  const { loadSession } = useContext(LoginContext);
+
+  useEffect(() => {
+    loadSession();
+  }, []);
+
   return (
     <BrowserRouter>
       <Switch>
